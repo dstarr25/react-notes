@@ -9,7 +9,6 @@
         // "quotes": [2, "single"],
         "linebreak-style": 0,
         "no-else-return": 1,
-        "new-cap": ["error", {"capIsNewExceptions": ["Router"]}],
         "no-console": 0,
         "import/no-unresolved": [2, { "caseSensitive": false } ],
         "no-unused-vars": ["error", { "vars": "all", "args": "none" }],
