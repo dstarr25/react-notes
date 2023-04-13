@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "jquery": "^3.6.4",
-    "vite-plugin-eslint": "^1.8.1",
-    "vite-plugin-favicons-inject": "^2.2.0"
+    "vite-plugin-eslint": "^1.8.1"
   }
 }
