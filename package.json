@@ -26,10 +26,13 @@
   "dependencies": {
     "@vitejs/plugin-react": "^3.1.0",
     "axios": "^1.3.5",
+    "immer": "^10.0.1",
     "jquery": "^3.6.4",
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-draggable": "^4.4.5",
+    "react-markdown": "^8.0.7",
     "react-router": "^6.10.0",
     "vite-plugin-eslint": "^1.8.1"
   }

@@ -1,30 +1,104 @@
+$note-minwidth: 400px;
+
 :root {
   text-size-adjust: 100%;
 }
 
+::before, *, ::after {
+    margin:0;
+    padding:0;
+}
+
 body, html {
-  font-family: "Roboto", sans-serif;
+  font-family: "Patrick Hand", cursive;
+  font-family: 'Itim', cursive;
   background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
   height: 100%;
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, grey 1px, transparent 1px),
+    linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 #main {
     background-color:white;
-    border-radius: 100px;
     padding: 50px;
-    text-align: center;
-    font-weight: bold;
-    font-size: 50px;
 }
 
-.logo {
-  background-image: url('img/mm25.jpg');
-  width: 100px;
-  height: 100px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  border-radius:100%;
-  margin:10px;
-  margin-left: auto;
-  margin-right: auto;
+.notesContainer {
+    width:100%;
+    height:100%;
 }
+
+.note {
+    min-width: $note-minwidth;
+    position:absolute;
+    padding:30px;
+    border-radius: 30px;
+    top:0px;
+    left:0px;
+    border: 8px solid black;
+    background-color: white;
+    box-shadow: 0.5rem 0.5rem #333;
+
+}
+
+.noteHeader {
+    width: 100%;
+    display:flex;
+    align-items: center;
+    flex-direction: flex-start;
+    margin-bottom: 10px;
+    > * {
+        margin-right:10px;
+    }
+}
+
+.noteTitle {
+    font-size:40px;
+    margin-right:20px;
+}
+
+.noteButton {
+    font-size: 35px;
+    cursor: pointer;
+    transition: transform 0.1s linear;
+}
+
+.noteButton:hover {
+    transform: scale(1.2) rotate(0.01turn);
+}
+
+.dragButton {
+    // justify-self: flex-end;
+    margin-left:auto;
+}
+
+.noteContent {
+    width:fit-content;
+    height:fit-content;
+    font-size: 35px;
+
+    textarea {
+        min-width: $note-minwidth;
+        height: 200px;
+        font-size: inherit;
+        font-family: inherit;
+        border-radius: 10px;
+        padding:10px;
+        background-color:#eee;
+    }
+}
+
+// .logo {
+//   background-image: url('img/mm25.jpg');
+//   width: 100px;
+//   height: 100px;
+//   background-repeat: no-repeat;
+//   background-size: contain;
+//   border-radius:100%;
+//   margin:10px;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+
