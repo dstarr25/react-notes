@@ -1,62 +1,143 @@
-$note-minwidth: 400px;
+$note-minwidth: 20vw;
+$note-maxwidth: 40vw;
+$border-thickness: 0.8vw;
 
 :root {
-  text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
-::before, *, ::after {
-    margin:0;
-    padding:0;
+::before,
+*,
+::after {
+    margin: 0;
+    padding: 0;
 }
 
-body, html {
-  font-family: "Patrick Hand", cursive;
-  font-family: 'Itim', cursive;
-  background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
-  height: 100%;
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, grey 1px, transparent 1px),
-    linear-gradient(to bottom, grey 1px, transparent 1px);
+body,
+html {
+    font-family: 'Itim', cursive;
+    background: linear-gradient(to bottom, #87e0fd 0%, #53cbf1 40%, #05abe0 100%);
+    height: 100%;
+    overflow: hidden;
 }
 
 #main {
-    background-color:white;
-    padding: 50px;
+    background-color: white;
+    height: 100%;
+    background-size: 40px 40px;
+    background-image:
+        linear-gradient(to right, grey 1px, transparent 1px),
+        linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+
+.appContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.noteEnterContainer {
+    z-index: 10;
+    position: absolute;
+    bottom: 4vh;
+    left: 4vh;
+    border-radius: $border-thickness;
+    box-shadow: 0.5vw 0.5vw #777;
+
+    :first-child {
+        border-right: 3px solid black;
+        border-radius: $border-thickness 0 0 $border-thickness;
+    }
+
+    :last-child {
+        border-left: 3px solid black;
+        border-radius: 0 $border-thickness $border-thickness 0;
+    }
+
+    * {
+        font-family: 'Itim', cursive;
+        font-size: 30px;
+        background-color: white;
+        padding: 30px;
+        border: 6px solid black;
+    }
+
+    :focus {
+        outline: none;
+        border-color: #555;
+    }
 }
 
 .notesContainer {
-    width:100%;
-    height:100%;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes trash {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(110vw, 110vh) rotate(270deg);
+    }
+}
+
+@keyframes spawn {
+    from {
+
+        transform: translate(-10vw, 110vh) rotate(270deg);
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .note {
     min-width: $note-minwidth;
-    position:absolute;
-    padding:30px;
+    max-width: $note-maxwidth;
+    position: absolute;
+    padding: 30px;
     border-radius: 30px;
-    top:0px;
-    left:0px;
+    top: 0px;
+    left: 0px;
     border: 8px solid black;
     background-color: white;
-    box-shadow: 0.5rem 0.5rem #333;
+    box-shadow: 0.5rem 0.5rem #555;
+    animation: spawn ease-in-out 0.5s;
+
+    button {
+        border: none;
+        background: none;
+    }
 
 }
 
+.note.hidden {
+    animation: trash 1s ease-in-out;
+}
+
 .noteHeader {
-    width: 100%;
-    display:flex;
+    display: flex;
     align-items: center;
     flex-direction: flex-start;
     margin-bottom: 10px;
-    > * {
-        margin-right:10px;
+
+    * {
+        margin-right: 10px;
     }
 }
 
 .noteTitle {
-    font-size:40px;
-    margin-right:20px;
+    font-size: 40px;
+    margin-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .noteButton {
@@ -70,13 +151,12 @@ body, html {
 }
 
 .dragButton {
-    // justify-self: flex-end;
-    margin-left:auto;
+    margin-left: auto;
 }
 
 .noteContent {
-    width:fit-content;
-    height:fit-content;
+    width: fit-content;
+    height: fit-content;
     font-size: 35px;
 
     textarea {
@@ -85,8 +165,8 @@ body, html {
         font-size: inherit;
         font-family: inherit;
         border-radius: 10px;
-        padding:10px;
-        background-color:#eee;
+        padding: 10px;
+        background-color: #fefefe;
     }
 }
 
@@ -101,4 +181,3 @@ body, html {
 //   margin-left: auto;
 //   margin-right: auto;
 // }
-
