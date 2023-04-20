@@ -1,5 +1,5 @@
-$note-minwidth: 10vw;
-$note-maxwidth: 20vw;
+$note-minwidth: 300px;
+$note-maxwidth: 800px;
 $border-thickness: 0.8vw;
 
 :root {
@@ -155,8 +155,6 @@ html {
 }
 
 .noteContent {
-    width: fit-content;
-    height: fit-content;
     font-size: 35px;
 
     textarea {
