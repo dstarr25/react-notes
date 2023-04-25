@@ -6,6 +6,8 @@ import { getDatabase, ref, set, onValue, get, remove, update, push } from 'fireb
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 // ^ we are using compat notation here as the new firebase 9 api is a mess and i kinda hate it
+// NOPE I'm using modern notation lol get rekt
+// but really it was just to get google auth working I couldn't figure it out with the compat notation stuff :(
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAV_e-ZmWbnF7QJ_TyYcu8gypm9any8k9A',

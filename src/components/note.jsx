@@ -35,9 +35,7 @@ const speed = { x: 3, y: 3 };
 const Note = (props) => {
     const [editing, setEditing] = useState(false);
     const [hidden, setHidden] = useState('');
-    const [pos, setPos] = useState({
-        x: props.note.x, y: props.note.y, xSpeed: speed.x, ySpeed: speed.y,
-    });
+    const [pos, setPos] = useState({ x: props.note.x, y: props.note.y, xSpeed: speed.x, ySpeed: speed.y });
     const noteref = useRef(null);
     const [dvding, setDvding] = useState(false);
     const [bgColor, setbgColor] = useState(getRandomColor(100, 80));
