@@ -1,105 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { produce } from 'immer';
+import Draggable from 'react-draggable';
 import Note from './components/note';
 import NoteEnter from './components/noteEnter';
+import Loginout from './components/loginout';
 import {
-    fetchNotes, removeNote, createNote, alterNotes,
+    fetchNotes, removeNote, createNote, alterNotes, googleLogin,
 } from './services/datastore';
 
 const App = () => {
-    const [noteNum, setNoteNum] = useState(0);
-    const [notes, setNotes] = useState({
-        // n10: {
-        //     title: 'note',
-        //     text: 'this is a note',
-        //     x: 500,
-        //     y: 100,
-        //     zIndex: 0,
-        // },
-        // n11: {
-        //     title: 'penis',
-        //     text: 'more penis',
-        //     x: 800,
-        //     y: 400,
-        //     zIndex: -14,
-        // },
-        // n12: {
-        //     title: 'penis',
-        //     text: 'more penis',
-        //     x: 15,
-        //     y: 100,
-        //     zIndex: -14,
-        // },
-        // n13: {
-        //     title: 'penis',
-        //     text: 'more penis',
-        //     x: 1000,
-        //     y: 100,
-        //     zIndex: -14,
-        // },
-    });
+    const [notes, setNotes] = useState({});
+    const [user, setUser] = useState({ localId: 'guest' });
 
     const changeNotes = (id, fields) => {
-        // setNotes(
-        //     produce((draft) => {
-        //         draft[id] = { ...draft[id], ...fields };
-        //     }),
-        // );
-
-        // now firebase:
-        alterNotes(id, fields);
+        alterNotes(user.localId, id, fields);
     };
 
     const deleteNote = (id) => {
         setTimeout(() => {
-            // setNotes(
-            //     produce((draft) => {
-            //         delete draft[id];
-            //     }),
-            // );
-
-            // now firebase:
-            removeNote(id);
+            removeNote(user.localId, id);
         }, 900);
     };
 
     const addNote = (name) => {
-        console.log('adding note...');
-        // setNotes(
-        //     produce((draft) => {
-        //         draft[`n${noteNum}`] = {
-        //             title: name,
-        //             text: '',
-        //             x: 180,
-        //             y: 420,
-        //             zIndex: 0,
-        //         };
-        //     }),
-        // );
-        // setNoteNum((val) => val + 1);
+        createNote(user.localId, name);
+    };
 
-        // now firebase:
-        createNote(name);
+    const loginNewUser = (newUser) => {
+        setUser(newUser);
+        fetchNotes(newUser, (n) => {
+            setNotes(n);
+        });
+    };
+
+    const logoutUser = () => {
+        loginNewUser({ localId: 'guest' });
     };
 
     // instead of componentDidMount which doesn't work with functional components :(
     useEffect(() => {
-        fetchNotes((n) => {
+        fetchNotes(user, (n) => {
             setNotes(n);
         });
     }, []);
 
     return (
-        <div>
+        <div id="appContainer">
             <NoteEnter addNote={addNote} />
             <div id="notesContainer">
                 {
                     Object.entries(notes).map(([id, note]) => {
-                        console.log(notes);
+                        // console.log(notes);
                         return <Note key={id} deleteNote={deleteNote} changeNotes={changeNotes} id={id} note={note} />;
                     })
                 }
             </div>
+            <Loginout user={user} loginNewUser={loginNewUser} logoutUser={logoutUser} />
         </div>
     );
 };

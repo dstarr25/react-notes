@@ -1,5 +1,10 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/database';
+// import firebase from 'firebase/compat/app';
+// import { GoogleAuthProvider } from 'firebase/compat/auth';
+// import 'firebase/compat/database';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set, onValue, get, remove, update, push } from 'firebase/database';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+
 // ^ we are using compat notation here as the new firebase 9 api is a mess and i kinda hate it
 
 const firebaseConfig = {
@@ -14,30 +19,79 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth();
+const provider = new GoogleAuthProvider();
+provider.addScope('profile');
+provider.addScope('email');
+let listener = null;
 
-export function fetchNotes(callback) {
-    // do something here
-    // firebase.database(app).ref('notes').on('value', (snapshot) => {
-    //     const newNoteState = snapshot.val();
-    //     return (newNoteState);
-    //     // do something with new note state
-    // });
-    db.ref('notes').get().then((snapshot) => {
-        callback(snapshot.exists() ? snapshot.val() : {});
+// export function fetchNotes(callback) {
+//     db.ref('notes').get().then((snapshot) => {
+//         callback(snapshot.exists() ? snapshot.val() : {});
+//     });
+
+//     db.ref('notes').on('value', (snapshot) => {
+//         callback(snapshot.exists() ? snapshot.val() : {});
+//     });
+// }
+
+export function fetchNotes(user, callback) {
+    if (listener) listener();
+    const notesRef = ref(db, user.localId);
+    get(notesRef).then((snapshot) => {
+        if (!snapshot.exists()) {
+            const welcomeNote = {
+                title: user.localId !== 'guest' ? `Hello, ${user.displayName}` : 'Welcome to the guest page',
+                text: user.localId !== 'guest' ? `Welcome to your private notes page.\n You are logged in as ${user.email}` : 'Hit the button down to the right to sign in with google and create your own private notes page!',
+                x: 100,
+                y: 100,
+                zIndex: 0,
+            };
+            callback({ welcomeNote });
+            push(notesRef, welcomeNote);
+            return;
+        }
+        callback(snapshot.val());
     });
-
-    db.ref('notes').on('value', (snapshot) => {
+    listener = onValue(notesRef, (snapshot) => {
         callback(snapshot.exists() ? snapshot.val() : {});
     });
 }
 
-export function removeNote(id) {
-    firebase.database().ref('notes').child(id).remove();
+// export function removeNote(id) {
+//     db.ref('notes').child(id).remove();
+// }
+
+export function removeNote(user, id) {
+    const refToNote = ref(db, `${user}/${id}`);
+    remove(refToNote);
 }
 
-export function createNote(name) {
+// export function createNote(name) {
+//     const note = {
+//         title: name,
+//         text: '',
+//         x: 180,
+//         y: 420,
+//         zIndex: 0,
+//     };
+//     db.ref('notes').push(note);
+// }
+
+// export function createNote(name) {
+//     const note = {
+//         title: name,
+//         text: '',
+//         x: 180,
+//         y: 420,
+//         zIndex: 0,
+//     };
+//     db.ref('notes').push(note);
+// }
+
+export function createNote(user, name) {
     const note = {
         title: name,
         text: '',
@@ -45,9 +99,26 @@ export function createNote(name) {
         y: 420,
         zIndex: 0,
     };
-    firebase.database().ref('notes').push(note);
+    const notesRef = ref(db, user);
+    push(notesRef, note);
 }
 
-export function alterNotes(id, fields) {
-    firebase.database().ref(`notes/${id}`).update(fields);
+// export function alterNotes(id, fields) {
+//     db.ref(`notes/${id}`).update(fields);
+// }
+
+export function alterNotes(user, id, fields) {
+    // db.ref(`notes/${id}`).update(fields);
+    const refToNote = ref(db, `${user}/${id}`);
+    update(refToNote, fields);
+}
+
+export function googleLogin(setUser) {
+    signInWithPopup(auth, provider).then((res) => {
+        console.log('about to call setUser function');
+        console.log(res.user.reloadUserInfo);
+        setUser(res.user.reloadUserInfo);
+    }).catch((e) => {
+        console.log(e);
+    });
 }

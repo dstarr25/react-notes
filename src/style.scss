@@ -30,9 +30,9 @@ html {
         linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
-.appContainer {
-    width: 100%;
-    height: 100%;
+#appContainer {
+    width: 100vw;
+    height: 100vh;
 }
 
 .noteEnterContainer {
@@ -41,7 +41,7 @@ html {
     bottom: 4vh;
     left: 4vh;
     border-radius: $border-thickness;
-    box-shadow: 0.5vw 0.5vw #777;
+    box-shadow: 6px 6px #777;
 
     :first-child {
         border-right: 3px solid black;
@@ -67,10 +67,39 @@ html {
     }
 }
 
-.notesContainer {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+.loginoutButton {
+    z-index: 10;
+    position: absolute;
+    bottom: 2vh;
+    right: 2vh;
+    border-radius: $border-thickness;
+    box-shadow: 3px 3px #777;
+    font-family: 'Itim', cursive;
+    font-size: 30px;
+    padding: 10px;
+    background-color: white;
+    border: 3px solid black;
+    transform-origin: bottom right;
+    transition: transform 0.1s linear;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    img {
+        width: 40px;
+        aspect-ratio: 1/1;
+        border-radius: 10000000px;
+    }
+}
+
+.loginoutButton:hover {
+    transform: scale(1.05);
+}
+
+#notesContainer {
+    position: absolute;
 }
 
 @keyframes trash {
@@ -144,6 +173,7 @@ html {
     font-size: 35px;
     cursor: pointer;
     transition: transform 0.1s linear;
+    user-select: none;
 }
 
 .noteButton:hover {
@@ -155,10 +185,12 @@ html {
 }
 
 .noteContent {
-    font-size: 35px;
+    font-size: 25px;
+    overflow-x: hidden;
 
     textarea {
         min-width: $note-minwidth;
+        max-width: 100%;
         height: 200px;
         font-size: inherit;
         font-family: inherit;
